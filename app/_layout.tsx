@@ -1,24 +1,39 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { ThemeProvider } from "@/context/ThemeContext";
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
+import { initDB } from "../lib/database";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+export default function Layout() {
+  const [dbReady, setDbReady] = useState(false);
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+ useEffect(() => {
+  try {
+    initDB(); // ← temporary, wipes and recreates table with correct schema
+    console.log("✅ DB ready");
+  } catch (e) {
+    console.error("❌ DB setup error:", e);
+  } finally {
+    setDbReady(true);
+  }
+}, []);
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  if (!dbReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#4F46E5" />
+      </View>
+    );
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+    <ThemeProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="task-detail" options={{ headerShown: true, title: "Note Details" }} />
+        <Stack.Screen name="add-task" options={{ headerShown: true, title: "Add Note" }} />
+        <Stack.Screen name="edit-task" options={{ headerShown: true, title: "Edit Note" }} />
       </Stack>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }

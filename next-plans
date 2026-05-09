@@ -1,0 +1,38 @@
+Main goal
+upgrade task manager:
+
+open task details
+edit existing task data
+update the record in SQLite
+return and see the updated list
+improve structure and polish
+prepare the app for final project continuation
+
+Goal:
+working task manager app with:
+Home
+Task List
+Add Task
+Task Detail
+Edit Task
+SQLite database
+Create
+Read
+Update
+Delete
+empty state
+validation
+try/catch
+status selection
+cleaner UI
+
+outcomes:
+explain what Update means in CRUD
+pass existing task data into an edit screen
+prefill form inputs with old data
+update a record in SQLite
+reload the task list after editing
+distinguish Add flow vs Edit flow
+explain why IDs matter even more in update/delete
+improve app structure and readability
+prepare the same project for final continuation
